@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>Three.js</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <style>
+            body {
+                overflow: hidden;
+                margin: 0px;
+            }
+        </style>
+
+        <!-- Import maps polyfill -->
+        <!-- Remove this when import maps will be widely supported -->
+        <script
+            async
+            src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"
+        ></script>
+
+        <script type="importmap">
+            {
+                "imports": {
+                    "three": "./build/three.module.js"
+                }
+            }
+        </script>
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+        <!-- Vendor JS-->
+        <script src="vendor/select2/select2.min.js"></script>
+        <script src="vendor/datepicker/moment.min.js"></script>
+        <script src="vendor/datepicker/daterangepicker.js"></script>
+        <script src="https://code.highcharts.com/highcharts.src.js"></script>
+
+    </head>
+<script>
+// get poles coordinates
+var xp=[];
+var yp=[];
+var zp=[];
+$.get("/get_coordinates", function(result) {
+                var data_x = result['x'];
+                var data_y = result['y'];
+                var data_z = result['z'];
+for(let i=0; i< data_x.length; i++) {
+    xp[i]=data_x[i]
+    yp[i]=data_y[i]  
+    zp[i]=data_z[i]
+}})
+</script>
+<script>
+var xc1= [];
+var yc1= [];
+var zc1= [];
+var xc2= [];
+var yc2= [];
+var zc2= [];
+var xc3= [];
+var yc3= [];
+var zc3= [];
+var xc4= [];
+var yc4= [];
+var zc4= [];
+var xc5= [];
+var yc5= [];
+var zc5= [];
+var xc6= [];
+var yc6= [];
+var zc6= [];
+var xc7= [];
+var yc7= [];
+var zc7= [];
+var xc8= [];
+var yc8= [];
+var zc8= [];
+var xc9= [];
+var yc9= [];
+var zc9= [];
+var xc10= [];
+var yc10= [];
+var zc10= [];
+var xc11= [];
+var yc11= [];
+var zc11= [];
+// get conductor coordinates
+$.get("/get_coordinates_conductors", function(result) {
+                var data_xc1 = result['x1'];
+                var data_yc1 = result['y1'];
+                var data_zc1 = result['z1'];
+                var data_xc2 = result['x2'];
+                var data_yc2 = result['y2'];
+                var data_zc2 = result['z2'];
+                var data_xc3 = result['x3'];
+                var data_yc3 = result['y3'];
+                var data_zc3 = result['z3'];
+                var data_xc4 = result['x4'];
+                var data_yc4 = result['y4'];
+                var data_zc4 = result['z4'];
+                var data_xc5 = result['x5'];
+                var data_yc5 = result['y5'];
+                var data_zc5 = result['z5'];
+                var data_xc6 = result['x6'];
+                var data_yc6 = result['y6'];
+                var data_zc6 = result['z6'];
+                var data_xc7 = result['x7'];
+                var data_yc7 = result['y7'];
+                var data_zc7 = result['z7'];
+                var data_xc8 = result['x8'];
+                var data_yc8 = result['y8'];
+                var data_zc8 = result['z8'];
+                var data_xc9 = result['x9'];
+                var data_yc9 = result['y9'];
+                var data_zc9 = result['z9'];
+                var data_xc10 = result['x10'];
+                var data_yc10 = result['y10'];
+                var data_zc10 = result['z10'];
+                var data_xc11 = result['x11'];
+                var data_yc11 = result['y11'];
+                var data_zc11 = result['z11'];
+                console.log(data_xc1);
+for (let j=0; j< data_xc1.length; j++) {
+        xc1[j]=data_xc1[j]
+        yc1[j]=data_yc1[j]  
+        zc1[j]=data_zc1[j]
+        xc2[j]=data_xc2[j]
+        yc2[j]=data_yc2[j]  
+        zc2[j]=data_zc2[j]
+        xc3[j]=data_xc3[j]
+        yc3[j]=data_yc3[j]  
+        zc3[j]=data_zc3[j]
+        xc4[j]=data_xc4[j]
+        yc4[j]=data_yc4[j]  
+        zc4[j]=data_zc4[j]
+        xc5[j]=data_xc5[j]
+        yc5[j]=data_yc5[j]  
+        zc5[j]=data_zc5[j]
+        xc6[j]=data_xc6[j]
+        yc6[j]=data_yc6[j]  
+        zc6[j]=data_zc6[j]
+        xc7[j]=data_xc7[j]
+        yc7[j]=data_yc7[j]  
+        zc7[j]=data_zc7[j]
+        xc8[j]=data_xc8[j]
+        yc8[j]=data_yc8[j]  
+        zc8[j]=data_zc8[j]
+        xc9[j]=data_xc9[j]
+        yc9[j]=data_yc9[j]  
+        zc9[j]=data_zc9[j]
+        xc10[j]=data_xc10[j]
+        yc10[j]=data_yc10[j]  
+        zc10[j]=data_zc10[j]
+        xc11[j]=data_xc11[j]
+        yc11[j]=data_yc11[j]  
+        zc11[j]=data_zc11[j]      
+}})
+</script>
+<body>   
+<script type="module" >
+//three js script -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+import * as THREE from 'three'
+import { OrbitControls } from './jsm/controls/OrbitControls.js'
+import Stats from './jsm/libs/stats.module.js'
+import { GUI } from './jsm/libs/lil-gui.module.min.js'
+const scene = new THREE.Scene()
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 500)
+camera.position.set( 100, 100, 100 );
+camera.lookAt( 0, 0, 0 );
+const renderer = new THREE.WebGLRenderer()
+renderer.setSize(window.innerWidth, window.innerHeight)
+document.body.appendChild(renderer.domElement)
+const controls = new OrbitControls(camera, renderer.domElement)
+window.addEventListener(
+    'resize',
+    () => {
+        camera.aspect = window.innerWidth / window.innerHeight
+        camera.updateProjectionMatrix()
+        renderer.setSize(window.innerWidth, window.innerHeight)
+        render()
+    },
+    false
+)
+const stats = Stats()
+document.body.appendChild(stats.dom)
+
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+//Code to map poles
+var geometry_pole=[]
+var material_pole=[]
+var cylinder=[]
+var curve=[]
+
+for (let i=0; i< xp.length; i++ ){
+curve[i] = new THREE.CatmullRomCurve3([
+new THREE.Vector3( xp[i],0,yp[i] ),
+new THREE.Vector3(xp[i],zp[i],yp[i])]);
+geometry_pole[i] = new THREE.TubeGeometry( curve[i], 64, 0.02, 8, false );
+material_pole[i] = new THREE.PointsMaterial({ color: 0xFFFFFF, size: 0.25 });
+cylinder[i] = new THREE.Points( geometry_pole[i], material_pole[i] );
+scene.add( cylinder[i] );
+}
+//-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// code to map conductors
+var curveRoadNo=[]
+var mesh_c=[]
+var geometry_c=[]
+var material_c=[]
+
+
+for (let k=0; k< xc1.length; k++ ){
+curveRoadNo[k]=new THREE.CatmullRomCurve3([
+    new THREE.Vector3( xc1[k],zc1[k],yc1[k]),
+    new THREE.Vector3( xc2[k],zc2[k],yc2[k]), 
+    new THREE.Vector3( xc3[k],zc3[k],yc3[k]), 
+    new THREE.Vector3( xc4[k],zc4[k],yc4[k]), 
+    new THREE.Vector3( xc5[k],zc5[k],yc5[k]), 
+    new THREE.Vector3( xc6[k],zc6[k],yc6[k]), 
+    new THREE.Vector3( xc7[k],zc7[k],yc7[k]), 
+    new THREE.Vector3( xc8[k],zc8[k],yc8[k]), 
+    new THREE.Vector3( xc9[k],zc9[k],yc9[k]), 
+    new THREE.Vector3( xc10[k],zc10[k],yc10[k]), 
+    new THREE.Vector3( xc11[k],zc11[k],yc11[k])
+])
+  
+geometry_c[k] = new THREE.TubeGeometry( curveRoadNo[k], 64, 0.02, 8, false );
+material_c[k] = new THREE.PointsMaterial({ color: 0xFFFFFF, size: 0.1 });
+mesh_c[k] = new THREE.Points( geometry_c[k],material_c[k]);
+scene.add(mesh_c[k]);
+}  
+//---------------------------------------------------------------------------------------------------------------------------------------------------------
+//codes to render
+scene.background = new THREE.Color( 0x000000 );
+const gui = new GUI()
+
+const cameraFolder = gui.addFolder('Camera')
+cameraFolder.add(camera.position, 'z', 0, 500)
+cameraFolder.open()
+function animate() {
+    requestAnimationFrame(animate)
+    controls.update()
+    render()
+    stats.update()
+}
+function render() {
+    renderer.render(scene, camera)
+}
+animate()
+        </script>
+    </body>
+</html>
